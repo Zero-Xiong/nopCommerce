@@ -1,4 +1,5 @@
 ﻿using Nop.Core.Plugins;
+using Nop.Plugin.Widgets.PromoSilder.Data;
 using Nop.Services.Cms;
 using System;
 using System.Collections.Generic;
@@ -8,34 +9,34 @@ namespace Nop.Plugin.Widgets.PromoSilder
 {
     public class PromoSilderPlugin : BasePlugin, IWidgetPlugin
     {
-        public PromoSilderPlugin()
-        {
+        private PromoSilderContext _context;
 
+        public PromoSilderPlugin(PromoSilderContext context)
+        {
+            _context = context;
         }
 
         public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            //actionName = "PromoSilderWidget";
-            //controllerName = "PromoSilder";
-            //routeValues = new RouteValueDictionary()
-            //{
-            //    { "Namespace", "Nop.Plugin.Widgets.PromoSilder.Controllers" },
-            //    { "area", null }
-            //};
-            throw new NotImplementedException();
+            actionName = "Configuration";
+            controllerName = "WidgetsPromoSilder";
+            routeValues = new RouteValueDictionary()
+            {
+                { "Namespace", "Nop.Plugin.Widgets.PromoSilder.Controllers" },
+                { "area", null }
+            };
         }
 
         public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            //actionName = "PromoSilderWidget";
-            //controllerName = "PromoSilder";
-            //routeValues = new RouteValueDictionary()
-            //{
-            //    { "Namespace", "Nop.Plugin.Widgets.PromoSilder.Controllers" },
-            //    { "area", null },
-            //    { "widgetZone", widgetZone }
-            //};
-            throw new NotImplementedException();
+            actionName = "DisplayWidget";
+            controllerName = "WidgetsPromoSilder";
+            routeValues = new RouteValueDictionary()
+            {
+                { "Namespace", "Nop.Plugin.Widgets.PromoSilder.Controllers" },
+                { "area", null },
+                { "widgetZone", widgetZone }
+            };
         }
 
         public IList<string> GetWidgetZones()
@@ -45,11 +46,13 @@ namespace Nop.Plugin.Widgets.PromoSilder
 
         public override void Install()
         {
+            _context.Install();
             base.Install();
         }
 
         public override void Uninstall()
         {
+            _context.UnInstall();
             base.Uninstall();
         }
     }
