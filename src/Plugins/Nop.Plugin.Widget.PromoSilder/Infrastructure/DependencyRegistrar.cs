@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
+using Autofac;
+using Nop.Plugin.Widgets.PromoSilder.Controllers;
+using Autofac.Core;
+using Nop.Core.Caching;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Infrastructure
 {
@@ -15,13 +19,15 @@ namespace Nop.Plugin.Widgets.PromoSilder.Infrastructure
         {
             get
             {
-                return 1;
+                return 2;
             }
         }
 
-        public void Register(global::Autofac.ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
+        public void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
-            throw new NotImplementedException();
+            //we cache presentation models between requests
+            builder.RegisterType<PromoSilderController>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"));
         }
     }
 }

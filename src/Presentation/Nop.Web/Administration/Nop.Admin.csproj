@@ -1427,7 +1427,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2454</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:5001/</IISUrl>
+          <IISUrl>http://localhost:2454/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:5000/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
           <CustomServerUrl>http://www.nopcommerce.com/</CustomServerUrl>
