@@ -9,9 +9,9 @@ namespace Nop.Plugin.Widgets.PromoSilder
 {
     public class PromoSilderPlugin : BasePlugin, IWidgetPlugin
     {
-        private PromoSilderContext _context;
+        private PromoSilderDbContext _context;
 
-        public PromoSilderPlugin(PromoSilderContext context)
+        public PromoSilderPlugin(PromoSilderDbContext context)
         {
             _context = context;
         }

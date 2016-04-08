@@ -10,9 +10,9 @@ using Nop.Core;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Data
 {
-    public class PromoSilderContext: DbContext, IDbContext
+    public class PromoSilderDbContext: DbContext, IDbContext
     {
-        public PromoSilderContext(string connectionString) : base(connectionString)
+        public PromoSilderDbContext(string connectionString) : base(connectionString)
         {
 
         }
@@ -32,7 +32,7 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
 
         public void Install()
         {
-            Database.SetInitializer<PromoSilderContext>(null);
+            Database.SetInitializer<PromoSilderDbContext>(null);
 
             Database.ExecuteSqlCommand(this.CreateDatabaseInstallationScript());
 

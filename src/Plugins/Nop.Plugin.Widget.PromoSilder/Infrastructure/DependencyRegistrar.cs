@@ -31,7 +31,7 @@ namespace Nop.Plugin.Widgets.PromoSilder.Infrastructure
 
         public void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
-            this.RegisterPluginDataContext<PromoSilderContext>(builder, CONTEXT_NAME);
+            this.RegisterPluginDataContext<PromoSilderDbContext>(builder, CONTEXT_NAME);
 
             builder.RegisterType<EfRepository<Models.PromoSilder>>()
                 .As<IRepository<Models.PromoSilder>>()

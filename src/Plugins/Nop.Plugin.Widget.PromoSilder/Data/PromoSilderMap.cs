@@ -14,6 +14,8 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
 
             HasKey(k => k.PromoSilderId);
 
+            Ignore(i => i.Id);
+
             Property(p => p.PromoSilderName);
             Property(p => p.ZoneName);
             Property(p => p.Interval);

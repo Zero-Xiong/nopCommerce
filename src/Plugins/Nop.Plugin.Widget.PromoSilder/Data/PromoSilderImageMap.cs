@@ -15,6 +15,8 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
 
             HasKey(k => k.PromoSilderImageId);
 
+            Ignore(i => i.Id);
+
             Property(p => p.Caption);
             Property(p => p.DisplayOrder);
             Property(p => p.FilePath);

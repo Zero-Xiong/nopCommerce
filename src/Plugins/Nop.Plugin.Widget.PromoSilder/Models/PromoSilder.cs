@@ -3,6 +3,7 @@ using Nop.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Models
 {
@@ -12,6 +13,7 @@ namespace Nop.Plugin.Widgets.PromoSilder.Models
         public PromoSilder()
         {
             Images = new List<PromoSilderImage>();
+            Id = 0; //bug? Ignored
         }
 
         public virtual int PromoSilderId { get; set; }
@@ -22,6 +24,7 @@ namespace Nop.Plugin.Widgets.PromoSilder.Models
 
         public virtual string ZoneName { get; set; }
 
+        //[UIHint("Integer")]
         public virtual int Interval { get; set; }
 
         public virtual bool PauseOnHover { get; set; }
@@ -32,6 +35,9 @@ namespace Nop.Plugin.Widgets.PromoSilder.Models
 
 
         public virtual IList<PromoSilderImage> Images { get; set; }
+
+
+        //public int ActiveStoreScopeConfiguration { get; set; }
 
     }
 }
