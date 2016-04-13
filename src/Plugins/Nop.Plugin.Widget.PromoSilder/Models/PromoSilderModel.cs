@@ -1,5 +1,6 @@
 ﻿
 using Nop.Core;
+using Nop.Web.Framework.Mvc;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,15 +9,17 @@ using System.ComponentModel.DataAnnotations;
 namespace Nop.Plugin.Widgets.PromoSilder.Models
 {
 
-    public class PromoSilder : BaseEntity
+    public class PromoSilderModel : BaseNopEntityModel
     {
-        public PromoSilder()
+        public PromoSilderModel()
         {
-            Images = new List<PromoSilderImage>();
-            Id = 0; //bug? Ignored
+            Images = new List<PromoSilderImageModel>();
         }
 
-        public virtual int PromoSilderId { get; set; }
+        public virtual int StoreId { get; set; }
+
+        public virtual string StoreName { get; set; }
+
 
         public virtual string PromoSilderName { get; set; }
 
@@ -24,20 +27,12 @@ namespace Nop.Plugin.Widgets.PromoSilder.Models
 
         public virtual string ZoneName { get; set; }
 
-        //[UIHint("Integer")]
         public virtual int Interval { get; set; }
 
         public virtual bool PauseOnHover { get; set; }
 
-        public virtual bool Wrap { get; set; }
-
-        public virtual bool KeyBoard { get; set; }
 
 
-        public virtual IList<PromoSilderImage> Images { get; set; }
-
-
-        //public int ActiveStoreScopeConfiguration { get; set; }
-
+        public virtual IList<PromoSilderImageModel> Images { get; set; }
     }
 }

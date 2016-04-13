@@ -18,7 +18,7 @@ namespace Nop.Plugin.Widgets.PromoSilder
 
         public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            actionName = "Configuration";
+            actionName = "PromoSilderList";
             controllerName = "WidgetsPromoSilder";
             routeValues = new RouteValueDictionary()
             {

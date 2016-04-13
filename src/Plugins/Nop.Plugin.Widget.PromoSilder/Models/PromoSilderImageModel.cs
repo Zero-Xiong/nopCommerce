@@ -1,18 +1,16 @@
 ﻿using Nop.Core;
+using Nop.Web.Framework.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Models
 {
-    public class PromoSilderImage : BaseEntity
+    public class PromoSilderImageModel : BaseNopEntityModel
     {
-        public PromoSilderImage()
+        public PromoSilderImageModel()
         {
-            Id = 0; //bug? Ignored
         }
-        public virtual int PromoSilderImageId { get; set; }
 
-        //[UIHint("Int32")]
         public virtual int PromoSilderId { get; set; }
 
         public virtual string Caption { get; set; }
@@ -21,9 +19,10 @@ namespace Nop.Plugin.Widgets.PromoSilder.Models
 
         public virtual string FilePath { get; set; }
 
-        //[UIHint("Int32")]
         public virtual int DisplayOrder { get; set; }
 
-        public PromoSilder PromoSilder { get; set; }
+
+
+        public virtual PromoSilderModel PromoSilder { get; set; }
     }
 }

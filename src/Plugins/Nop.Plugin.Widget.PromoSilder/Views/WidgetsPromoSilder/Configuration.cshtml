@@ -32,10 +32,7 @@
 
 @helper CreateUpdate()
 {
-if (ViewBag.ErrorMessage != null)
-{
-        <div class="alert alert-warning alert-dismissable">@ViewBag.ErrorMessage</div>
-}
+
 using (Html.BeginForm())
 {
         @Html.AntiForgeryToken()

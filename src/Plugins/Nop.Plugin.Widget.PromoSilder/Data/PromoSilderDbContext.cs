@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Nop.Core;
+using Nop.Plugin.Widgets.PromoSilder.Domain;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Data
 {
     public class PromoSilderDbContext: DbContext, IDbContext
     {
-        public PromoSilderDbContext(string connectionString) : base(connectionString)
+        public PromoSilderDbContext(string nameOrConnectionString) 
+            : base(nameOrConnectionString)
         {
 
         }
@@ -41,11 +43,15 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
 
         public void UnInstall()
         {
-            this.DropPluginTable("PromoSilderImage");
-            this.DropPluginTable("PromoSilder");
+            var tableNameSilder = this.GetTableName<PromoSilderRecord>();
+            var tableNameSilderImage = this.GetTableName<PromoSilderImageRecord>();
+
+            this.DropPluginTable(tableNameSilderImage);
+            this.DropPluginTable(tableNameSilder);
+            
         }
 
-        IDbSet<TEntity> IDbContext.Set<TEntity>()
+        public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
             return base.Set<TEntity>();
         }
@@ -54,12 +60,14 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
         {
             get
             {
-                throw new NotImplementedException();
+                return this.Configuration.ProxyCreationEnabled;
+                //throw new NotImplementedException();
             }
 
             set
             {
-                throw new NotImplementedException();
+                this.Configuration.ProxyCreationEnabled = value;
+                //throw new NotImplementedException();
             }
         }
 
@@ -67,12 +75,14 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
         {
             get
             {
-                throw new NotImplementedException();
+                return this.Configuration.AutoDetectChangesEnabled;
+                //throw new NotImplementedException();
             }
 
             set
             {
-                throw new NotImplementedException();
+                this.Configuration.AutoDetectChangesEnabled = value;
+                //throw new NotImplementedException();
             }
         }
 
@@ -93,7 +103,10 @@ namespace Nop.Plugin.Widgets.PromoSilder.Data
 
         public void Detach(object entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
         }
     }
 }

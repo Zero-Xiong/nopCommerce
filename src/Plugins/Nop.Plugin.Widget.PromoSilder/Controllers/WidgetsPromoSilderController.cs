@@ -8,99 +8,149 @@ using Nop.Plugin.Widgets.PromoSilder.Models;
 using System.Linq;
 using Nop.Core;
 using Nop.Services.Stores;
+using Nop.Web.Framework.Kendoui;
+using Nop.Plugin.Widgets.PromoSilder.Services;
+using Nop.Services.Security;
+using System.Web.Routing;
+using Nop.Web.Framework.Security;
+using Nop.Web.Framework.Mvc;
+using Nop.Plugin.Widgets.PromoSilder.Domain;
+using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Controllers
 {
 
     public class WidgetsPromoSilderController : BasePluginController
     {
-        private ICacheManager _cacheManager;
-        private IPictureService _pictureService;
-        private IRepository<PromoSilderImage> _promoSilderImageRep;
-        private IRepository<Models.PromoSilder> _promoSilderRep;
-        private IStoreService _storeService;
-        private IWorkContext _workContext;
+        private readonly ICacheManager _cacheManager;
+        private readonly IPictureService _pictureService;
+
+        private readonly IPromoSilderService _promoSilderService;
+        private readonly IPromoSilderImageService _promoSiderImageService;
+
+        private readonly IStoreService _storeService;
+        private readonly IWorkContext _workContext;
+        private readonly IPermissionService _permissionService;
 
         public WidgetsPromoSilderController(
             IWorkContext workContext,
             IStoreService storeService,
             ICacheManager cacheManager,
             IPictureService pictureService,
-            IRepository<Models.PromoSilder> promoSiderRep,
-            IRepository<Models.PromoSilderImage> promoSiderImageRep
+            IPromoSilderService promoSilderService,
+            IPromoSilderImageService promoSiderService,
+            IPermissionService permissionService
             )
         {
             _storeService = storeService;
             _workContext = workContext;
             _cacheManager = cacheManager;
             _pictureService = pictureService;
-            _promoSilderRep = promoSiderRep;
-            _promoSilderImageRep = promoSiderImageRep;
+            _promoSilderService = promoSilderService;
+            _promoSiderImageService = promoSiderService;
+            _permissionService = permissionService;
         }
 
-        public ActionResult Configuration(int PromoSilderId = 0)
+        protected override void Initialize(RequestContext requestContext)
         {
-            var promoSilder = new Models.PromoSilder() { PromoSilderId = PromoSilderId, Interval = 3 };
-            //var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-            //promoSilder.ActiveStoreScopeConfiguration = storeScope;
+            //little hack here
+            //always set culture to 'en-US' (Telerik has a bug related to editing decimal values in other cultures). Like currently it's done for admin area in Global.asax.cs
+            //CommonHelper.SetTelerikCulture();
 
-            if (PromoSilderId > 0)
-            {
-                promoSilder = _promoSilderRep.GetById(PromoSilderId);
-            }
+            base.Initialize(requestContext);
+        }
 
-            return View("~/Plugins/Widgets.PromoSilder/Views/WidgetsPromoSilder/Configuration.cshtml", promoSilder);
+        [ChildActionOnly]
+        [AdminAuthorize]
+        public ActionResult PromoSilderList()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageWidgets))
+                return Content("Access denied");
+
+            return View();
         }
 
         [HttpPost]
-        [AdminAuthorize]
-        public ActionResult Configuration(Models.PromoSilder promoSilder)
+        [AdminAntiForgery]
+        public ActionResult ActualList(DataSourceRequest command)
         {
-            ViewBag.ErrorMessage = null;
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageWidgets))
+                return Content("Access denied");
 
-            if (ModelState.IsValid)
+            var silders = _promoSilderService.GetAllPromoSilders(command.Page - 1, command.PageSize); //command.Page starts from 1.
+            var model = silders
+                .Select(x =>
+               {
+                   var m = new PromoSilderModel()
+                   {
+                       Id = x.Id,
+                       Interval = x.Interval,
+                       IsActive = x.IsActive,
+                       PauseOnHover = x.PauseOnHover,
+                       PromoSilderName = x.PromoSilderName,
+                       StoreId = x.StoreId,
+                       ZoneName = x.ZoneName
+                   };
+
+                   //store
+                   var store = _storeService.GetStoreById(x.StoreId);
+                   m.StoreName = (store != null) ? store.Name : "*";
+
+                   return m;
+
+               }).ToList();
+
+            var gridModel = new DataSourceResult
             {
-                var silder = _promoSilderRep.GetById(promoSilder.PromoSilderId);
+                Data = model,
+                Total = silders.Count()
+            };
 
-                if (silder == null)
-                {
-                    _promoSilderRep.Insert(promoSilder);
-                    SuccessNotification("Promo Silder has been created successfully!");
-                    ModelState.Clear();
+            return Json(gridModel);
+        }
 
-                    return Configuration(promoSilder.PromoSilderId);
-                }
-                else
-                {
-                    silder.Interval = promoSilder.Interval;
-                    silder.IsActive = promoSilder.IsActive;
-                    silder.KeyBoard = promoSilder.KeyBoard;
-                    silder.PauseOnHover = promoSilder.PauseOnHover;
-                    silder.PromoSilderName = promoSilder.PromoSilderName;
-                    silder.Wrap = promoSilder.Wrap;
-                    silder.ZoneName = promoSilder.ZoneName;
+        [HttpPost]
+        [AdminAntiForgery]
+        public ActionResult PromoSilderUpdate(PromoSilderModel silder)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageWidgets))
+                return Content("Access denied");
 
-                    _promoSilderRep.Update(silder);
-                    _cacheManager.Clear();
-                    SuccessNotification("The changes have been saved!");
+            var entity = _promoSilderService.GetPromoSilderById(silder.Id);
+            entity.Interval = silder.Interval;
+            entity.IsActive = silder.IsActive;
+            entity.PauseOnHover = silder.PauseOnHover;
+            entity.PromoSilderName = silder.PromoSilderName;
 
-                    ModelState.Clear();
+            _promoSilderService.UpdatePromoSilder(entity);
 
-                    return Configuration(silder.PromoSilderId);
-                    //return View("~/Plugins/Widgets.PromoSilder/Views/WidgetsPromoSilder/Configuration.cshtml", silder);
-                }
-            }
-            else { 
-                ViewBag.ErrorMessage = String.Join(Environment.NewLine, ModelState.Values.SelectMany(v => v.Errors)
-                                                           .Select(v => v.ErrorMessage + " " + v.Exception));
-                return Configuration();
-                //return View("~/Plugins/Widgets.PromoSilder/Views/WidgetsPromoSilder/Configuration.cshtml");
-            }
+            _cacheManager.Clear();
+
+            return new NullJsonResult();
+            
+        }
+
+        [HttpPost]
+        [AdminAntiForgery]
+        public ActionResult PromoSilderDelete(PromoSilderModel silder)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageWidgets))
+                return Content("Access denied");
+
+            var entity = _promoSilderService.GetPromoSilderById(silder.Id);
+
+            if (silder != null)
+                _promoSilderService.DeletePromoSilder(entity);
+
+            _cacheManager.Clear();
+
+            return new NullJsonResult();
         }
 
         public ActionResult DisplayWidget()
         {
             return Content("DisplayWidget");
         }
+    
     }
 }

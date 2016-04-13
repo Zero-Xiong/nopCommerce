@@ -14,6 +14,8 @@ using Nop.Web.Framework.Mvc;
 using Nop.Plugin.Widgets.PromoSilder.Data;
 using Nop.Data;
 using Nop.Core.Data;
+using Nop.Plugin.Widgets.PromoSilder.Services;
+using Nop.Plugin.Widgets.PromoSilder.Domain;
 
 namespace Nop.Plugin.Widgets.PromoSilder.Infrastructure
 {
@@ -31,15 +33,19 @@ namespace Nop.Plugin.Widgets.PromoSilder.Infrastructure
 
         public void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
+            builder.RegisterType<PromoSilderService>().As<IPromoSilderService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<PromoSilderImageService>().As<IPromoSilderImageService>().InstancePerLifetimeScope();
+
             this.RegisterPluginDataContext<PromoSilderDbContext>(builder, CONTEXT_NAME);
 
-            builder.RegisterType<EfRepository<Models.PromoSilder>>()
-                .As<IRepository<Models.PromoSilder>>()
+            builder.RegisterType<EfRepository<PromoSilderRecord>>()
+                .As<IRepository<PromoSilderRecord>>()
                 .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<EfRepository<Models.PromoSilderImage>>()
-                .As<IRepository<Models.PromoSilderImage>>()
+            builder.RegisterType<EfRepository<PromoSilderImageRecord>>()
+                .As<IRepository<PromoSilderImageRecord>>()
                 .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
                 .InstancePerLifetimeScope();
 
