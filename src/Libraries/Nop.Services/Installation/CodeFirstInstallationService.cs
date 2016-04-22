@@ -4945,7 +4945,8 @@ namespace Nop.Services.Installation
                 EuVatAllowVatExemption = true,
                 EuVatUseWebService = false,
                 EuVatAssumeValid = false,
-                EuVatEmailAdminWhenNewVatSubmitted = false
+                EuVatEmailAdminWhenNewVatSubmitted = false,
+                LogErrors = true
             });
 
             settingService.SaveSetting(new DateTimeSettings
@@ -5015,7 +5016,8 @@ namespace Nop.Services.Installation
                 VendorsBlockItemsToDisplay = 0,
                 ShowVendorOnProductDetailsPage = true,
                 AllowCustomersToContactVendors = true,
-                AllowCustomersToApplyForVendorAccount = true
+                AllowCustomersToApplyForVendorAccount = true,
+                MaximumProductNumber = 3000
             });
 
             var eaGeneral = _emailAccountRepository.Table.FirstOrDefault();

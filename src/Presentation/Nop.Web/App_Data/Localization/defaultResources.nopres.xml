@@ -2241,6 +2241,9 @@
   <LocaleResource Name="Admin.Catalog.Products.EditProductDetails">
     <Value>Edit product details</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ExceededMaximumNumber">
+    <Value>The maximum allowed number of products has been exceeded ({0})</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Products.Fields.AclCustomerRoles">
     <Value>Customer roles</Value>
   </LocaleResource>
@@ -6663,6 +6666,12 @@
   <LocaleResource Name="Admin.Configuration.Settings.Vendor.AllowSearchByVendor.Hint">
     <Value>Check to allow customers to search by vendor on advanced search page.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Vendor.MaximumProductNumber">
+    <Value>Maximum number of products</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Vendor.MaximumProductNumber.Hint">
+    <Value>Sets a maximum number of products per vendor</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.Vendor.ShowVendorOnProductDetailsPage">
     <Value>Show vendor on product details page</Value>
   </LocaleResource>
@@ -8865,9 +8874,6 @@
   <LocaleResource Name="Admin.Header.ClearCache">
     <Value>Clear cache</Value>
   </LocaleResource>
-  <LocaleResource Name="Admin.Header.LoggedInAs">
-    <Value>Logged in as: {0}</Value>
-  </LocaleResource>
   <LocaleResource Name="Admin.Header.Logout">
     <Value>Logout?</Value>
   </LocaleResource>
@@ -10229,6 +10235,18 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.SearchStore.Hint">
     <Value>Search by a specific store.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.StartDate">
+    <Value>Start date</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.StartDate.Hint">
+    <Value>The start date for the search.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.EndDate">
+    <Value>End date</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.EndDate.Hint">
+    <Value>The end date for the search.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.RecurringPayments">
     <Value>Recurring payments</Value>

@@ -537,6 +537,7 @@ namespace Nop.Admin.Infrastructure.Mapper
                 cfg.CreateMap<SpecificationAttributeOption, SpecificationAttributeOptionModel>()
                     .ForMember(dest => dest.NumberOfAssociatedProducts, mo => mo.Ignore())
                     .ForMember(dest => dest.Locales, mo => mo.Ignore())
+                    .ForMember(dest => dest.EnableColorSquaresRgb, mo => mo.Ignore())
                     .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
                 cfg.CreateMap<SpecificationAttributeOptionModel, SpecificationAttributeOption>()
                     .ForMember(dest => dest.SpecificationAttribute, mo => mo.Ignore());
@@ -706,7 +707,8 @@ namespace Nop.Admin.Infrastructure.Mapper
                     .ForMember(dest => dest.AllowCustomersToContactVendors_OverrideForStore, mo => mo.Ignore())
                     .ForMember(dest => dest.AllowCustomersToApplyForVendorAccount_OverrideForStore, mo => mo.Ignore())
                     .ForMember(dest => dest.AllowSearchByVendor_OverrideForStore, mo => mo.Ignore())
-                    .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
+                    .ForMember(dest => dest.CustomProperties, mo => mo.Ignore())
+                    .ForMember(dest => dest.MaximumProductNumber_OverrideForStore, mo => mo.Ignore());
                 cfg.CreateMap<VendorSettingsModel, VendorSettings>()
                     .ForMember(dest => dest.DefaultVendorPageSizeOptions, mo => mo.Ignore());
                 cfg.CreateMap<ShippingSettings, ShippingSettingsModel>()

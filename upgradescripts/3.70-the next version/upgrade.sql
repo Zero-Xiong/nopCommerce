@@ -365,6 +365,30 @@ set @resources='
   <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.AlreadyExists">
     <Value>This attribute is already added to this product</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Header.LoggedInAs">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Vendor.MaximumProductNumber">
+    <Value>Maximum number of products</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Vendor.MaximumProductNumber.Hint">
+    <Value>Sets a maximum number of products per vendor</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ExceededMaximumNumber">
+    <Value>The maximum allowed number of products has been exceeded ({0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.StartDate">
+    <Value>Start date</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.StartDate.Hint">
+    <Value>The start date for the search.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.EndDate">
+    <Value>End date</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.EndDate.Hint">
+    <Value>The end date for the search.</Value>
+  </LocaleResource>
 </Language>
 '
 
@@ -589,6 +613,14 @@ IF NOT EXISTS (SELECT 1 FROM [Setting] WHERE [name] = N'captchasettings.recaptch
 BEGIN
 	INSERT [Setting] ([Name], [Value], [StoreId]) 
 	VALUES (N'captchasettings.recaptchalanguage',N'',0);
+END
+GO
+
+--new setting
+IF NOT EXISTS (SELECT 1 FROM [Setting] WHERE [name] = N'vendorsettings.maximumproductnumber')
+BEGIN
+	INSERT [Setting] ([Name], [Value], [StoreId]) 
+	VALUES (N'vendorsettings.maximumproductnumber',N'3000',0);
 END
 GO
 
@@ -1369,3 +1401,11 @@ BEGIN
 	EXEC(@create_index_text)
 END
 GO
+
+--new setting
+ IF NOT EXISTS (SELECT 1 FROM [Setting] WHERE [name] = N'taxsettings.logerrors')
+ BEGIN
+ 	INSERT [Setting] ([Name], [Value], [StoreId])
+ 	VALUES (N'taxsettings.logerrors', N'True', 0)
+ END
+ GO
