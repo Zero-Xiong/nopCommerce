@@ -15,8 +15,8 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <FileUpgradeFlags>0</FileUpgradeFlags>
-    <UpgradeBackupLocation>D:\StudyCase\WorkProjects\nopCommerce\src\Backup1\</UpgradeBackupLocation>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <UpgradeBackupLocation>D:\StudyCase\WorkProjects\nopCommerce\src\Backup\</UpgradeBackupLocation>
     <OldToolsVersion>14.0</OldToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />

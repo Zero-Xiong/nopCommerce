@@ -57,7 +57,7 @@ namespace Nop.Plugin.Widgets.PromoSilder.Controllers
             //always set culture to 'en-US' (Telerik has a bug related to editing decimal values in other cultures). Like currently it's done for admin area in Global.asax.cs
             //CommonHelper.SetTelerikCulture();
 
-            base.Initialize(requestContext);
+            //base.Initialize(requestContext);
         }
 
         [ChildActionOnly]
