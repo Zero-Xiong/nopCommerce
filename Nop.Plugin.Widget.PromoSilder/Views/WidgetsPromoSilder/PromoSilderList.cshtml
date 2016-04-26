@@ -1,0 +1,143 @@
+﻿@using Nop.Web.Framework;
+@using Nop.Core.Infrastructure;
+
+@{
+    Layout = "";
+
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+}
+
+@Html.AntiForgeryToken()
+
+<table class="adminContent">
+    <tr>
+        <td><p>Edit Panel</p></td>
+    </tr>
+    <tr>
+        <td>
+            <div id="widgets-grid"></div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#widgets-grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: {
+                                    url: "@Html.Raw(Url.Action("ActualList", "WidgetsPromoSilder"))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                },
+                                update: {
+                                    url: "@Html.Raw(Url.Action("PromoSilderUpdate", "WidgetsPromoSilder"))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                },
+                                destory: {
+                                    url: "@Html.Raw(Url.Action("PromoSilderDelete", "WidgetsPromoSilder"))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                }
+                            },
+                            schema: {
+                                data: "Data",
+                                total: "Total",
+                                errors: "Errors",
+                                model: {
+                                    id: "Id",
+                                    fields: {
+                                        Id: { editable: false, type: "number", visible: false },
+                                        StoreName: { editable: false, type: "string" },
+                                        PromoSilderName: { editable: true, type: "string" },
+                                        ZoneName: { editable: true, type: "string" },
+                                        Interval: { editable: true, type: "number" },
+                                        IsActive: { editable: true, type: "boolean" },
+                                        PauseOnHover: { editable: true, type: "boolean" }
+                                    }
+                                }
+                            },
+                            requestEnd: function (e) {
+                                if (e.type == "update") {
+                                    this.read();
+                                }
+                            },
+                            error: function (e) {
+                                display_kendoui_grid_error(e);
+                                // Cancel the changes
+                                this.cancelChanges();
+                            },
+                            pageSize: @(defaultGridPageSize),
+                            serverPaging: true,
+                            serverFiltering: true,
+                            serverSorting: true
+                        },
+                        pageable: {
+                            refresh: true,
+                            pageSizes: [@(gridPageSizes)],
+                            numeric: true,
+                            previousNext: true,
+                            info: true
+                        },
+                        editable: {
+                            confirmation: true,
+                            mode: "inline"
+                        },
+                        scrollable: false,
+                        columns: [
+                        {
+                            field: "StoreName",
+                            title: "Store Name",
+                            width: 200
+                        },
+                        {
+                            field: "PromoSilderName",
+                            title: "Silder Name",
+                            width: 200
+                        }, {
+                            field: "ZoneName",
+                            title: "Zone Name",
+                            width: 200
+                        }, {
+                            field: "Interval",
+                            title: "Interval",
+                            width: 100
+                        }, {
+                            field: "IsActive",
+                            title: "@T("Admin.ContentManagement.Widgets.Fields.IsActive")",
+                            width: 100,
+                            headerAttributes: { style: "text-align:center" },
+                            attributes: { style: "text-align:center" },
+                            template: '<img src="@Url.Content("~/Administration/Content/images/")active-#=IsActive#.gif" />'
+                        }, {
+                            field: "PauseOnHover",
+                            title: "PauseOnHover",
+                            width: 100,
+                            headerAttributes: { style: "text-align:center" },
+                            attributes: { style: "text-align:center" },
+                            template: '<img src="@Url.Content("~/Administration/Content/images/")active-#=IsActive#.gif" />'
+                        }, {
+                            command: [{
+                                name: "edit",
+                                text: {
+                                    edit: "@T("Admin.Common.Edit")",
+                                    update: "@T("Admin.Common.Update")",
+                                    cancel: "@T("Admin.Common.Cancel")"
+                                }
+                            }, {
+                                name: "destroy",
+                                text: "@T("Admin.Common.Delete")"
+                            }],
+                            title: "@T("Admin.Common.Edit")",
+                            width: 150
+                        }
+                        ]
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+</table>

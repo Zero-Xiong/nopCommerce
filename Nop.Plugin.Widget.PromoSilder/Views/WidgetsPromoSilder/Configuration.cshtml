@@ -1,0 +1,117 @@
+﻿@model Nop.Plugin.Widgets.PromoSilder.Models.PromoSilder
+
+@using Nop.Web.Framework;
+@using Nop.Web.Framework.UI;
+@using System.Linq;
+
+@{
+    Layout = "";
+}
+@*@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#silder-edit").kendoTabStrip({
+            animation: {
+                open: { effects: "fadeIn" }
+            },
+            select: tabstrip_on_tab_select
+        });
+    });
+
+</script>
+
+<div id="silder-edit">
+    <ul>
+        <li @Html.RenderSelectedTabIndex(0, GetSelectedTabIndex())>Silder</li>
+        <li @Html.RenderSelectedTabIndex(1, GetSelectedTabIndex())>Images</li>
+    </ul>
+    <div>@CreateUpdate()</div>
+    <div>@Images()</div>
+</div>
+
+@helper CreateUpdate()
+{
+
+using (Html.BeginForm())
+{
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend><strong>Manage Your Silder</strong></legend>
+
+            <table class="adminContent">
+                <tr>
+                    <td class="adminData" colspan="2">
+                        @Html.HiddenFor(model => model.PromoSilderId)
+                        @Html.HiddenFor(model => model.Id)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.PromoSilderName):</td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.PromoSilderName)
+                        @Html.ValidationMessageFor(model => model.PromoSilderName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.IsActive):</td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.Interval):</td>
+                    <td class="adminData">
+                        @*@Html.TextBoxFor(model => model.Interval)*@
+                        @Html.EditorFor(model => model.Interval)
+                        @Html.ValidationMessageFor(model => model.Interval)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.Wrap):</td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.Wrap)
+                        @Html.ValidationMessageFor(model => model.Wrap)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.PauseOnHover):</td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.PauseOnHover)
+                        @Html.ValidationMessageFor(model => model.PauseOnHover)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.KeyBoard):</td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.KeyBoard)
+                        @Html.ValidationMessageFor(model => model.KeyBoard)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">@Html.NopLabelFor(model => model.ZoneName):</td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(model => model.ZoneName,
+                                                    new SelectList(new List<string>() { "home_page_top", "productdetails_top", "categorydetails_after_breadcrumb" }))
+                        @Html.ValidationMessageFor(model => model.ZoneName)
+                    </td>
+
+                </tr>
+            </table>
+        </fieldset>
+            <br />
+            <table class="adminContent">
+                <tr>
+                    <td colspan="2">
+                        @*<input type="submit" name="Clear" class="k-button" value="@T("Admin.Common.Clear")" />*@
+                        <input type="submit" name="save" class="k-button" value="@T("Admin.Common.Save")" />
+                    </td>
+                </tr>
+            </table>
+}
+}
+
+@helper Images()
+{
+}
